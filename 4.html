@@ -1,0 +1,46 @@
+<!--Write an Angular JS application that can calculate factorial and compute square based on given user input.-->
+<!DOCTYPE html>
+<html ng-app="calculatorApp">
+<head>
+ <title>AngularJS Calculator</title>
+ <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+</head>
+<body ng-controller="CalculatorController">
+ <h1>AngularJS Calculator</h1>
+ <label for="numberInput">Enter a number:</label>
+ <input type="number" id="numberInput" ng-model="userInput" />
+ <button ng-click="calculateFactorial()">Calculate Factorial</button>
+ <button ng-click="calculateSquare()">Calculate Square</button>
+ <p ng-if="factorialResult !== null">Factorial: {{ factorialResult }}</p>
+ <p ng-if="squareResult !== null">Square: {{ squareResult }}</p>
+ <script>
+ angular.module('calculatorApp', [])
+ .controller('CalculatorController', function ($scope) {
+ $scope.userInput = null;
+ $scope.factorialResult = null;
+ $scope.squareResult = null;
+ $scope.calculateFactorial = function () {
+ if ($scope.userInput !== null && $scope.userInput >= 0) {
+ $scope.factorialResult = calculateFactorial($scope.userInput);
+ } else {
+ $scope.factorialResult = null;
+ }
+ };
+ $scope.calculateSquare = function () {
+ if ($scope.userInput !== null) {
+ $scope.squareResult = $scope.userInput * $scope.userInput;
+ } else {
+ $scope.squareResult = null;
+ }
+ };
+ function calculateFactorial(n) {
+ if (n === 0 || n === 1) {
+ return 1;
+ } else {
+ return n * calculateFactorial(n - 1);
+ }
+ }
+ });
+ </script>
+</body>
+</html>

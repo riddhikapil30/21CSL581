@@ -1,0 +1,62 @@
+<!--Develop AngularJS program to create a login form, with validation for the username and password fields.-->
+<!DOCTYPE html>
+<html lang="en" ng-app="loginApp">
+<head>
+ <meta charset="UTF-8">
+ <title>AngularJS Login Form</title>
+ <style>
+ .error {
+ color: red;
+ }
+ </style>
+ <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.9/angular.min.js"></script>
+</head>
+<body>
+ <div ng-controller="LoginController">
+ <h2>Login</h2>
+ <form name="loginForm" ng-submit="login()" novalidate>
+ <label for="username">Username:</label>
+ <input type="text" name="username" ng-model="user.username" ng-minlength="5" ngmaxlength="20"
+ required>
+ <span class="error" ng-show="loginForm.username.$error.required && 
+loginForm.username.$dirty">Username
+ is required.</span>
+ <span class="error" ng-show="loginForm.username.$error.minlength">Username must be at 
+least 5
+ characters.</span>
+ <span class="error" ng-show="loginForm.username.$error.maxlength">Username cannot be 
+more than 20
+ characters.</span>
+ <br>
+ <label for="password">Password:</label>
+ <input type="password" name="password" ng-model="user.password" ng-minlength="8" 
+required>
+ <span class="error" ng-show="loginForm.password.$error.required && 
+loginForm.password.$dirty">Password
+ is required.</span>
+ <span class="error" ng-show="loginForm.password.$error.minlength">Password must be at 
+least 8
+ characters.</span>
+ <br>
+ <button type="submit" ng-disabled="loginForm.$invalid">Login</button>
+ </form>
+ <div ng-show="isSubmitted && loginForm.$invalid">
+ <p class="error">Please fix the errors above.</p>
+ </div>
+ </div>
+ <script>
+ var app = angular.module('loginApp', []);
+ app.controller('LoginController', function ($scope) {
+ $scope.user = {};
+ $scope.isSubmitted = false;
+ $scope.login = function () {
+ $scope.isSubmitted = true;
+ // Perform login logic here
+ if ($scope.loginForm.$valid) {
+ alert('Login successful!');
+ }
+ };
+ });
+ </script>
+</body>
+</html>

@@ -1,0 +1,78 @@
+<!--Develop an AngularJS program to create a simple to-do list application. Allow users to add, edit, and delete
+tasks.Note: The default values for tasks may be included in the program.-->
+<!DOCTYPE html>
+ <html lang="en" ng-app="todoApp">
+   <head> 
+      <title>To-Do List</title>
+      <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+   </head>
+   <body>
+   <div ng-controller="TodoController"> 
+         <h2>To-Do List</h2>
+         <form ng-submit="addTask()"> 
+         <label for="newTask">New Task:</label>
+         <input type="text" id="newTask" ng-model="newTask" required>
+         <button type="submit">Add Task</button> 
+         </form> 
+         <ul>
+            <li ng-repeat="task in tasks">
+            <span>{{ task.name }}</span>
+            <button ng-click="editTask(task)">Edit</button>
+            <button ng-click="deleteTask(task)">Delete</button> 
+            </li> 
+         </ul>
+      <!-- Modal for editing tasks --> 
+      <div ng-show="editingTask !== null"> 
+         <h3>Edit Task</h3>
+         <label for="editedTask">Task Name:</label>
+         <input type="text" id="editedTask" ng-model="editingTask.name" required>
+         <button ng-click="saveEditedTask()">Save</button>
+         <button ng-click="cancelEdit()">Cancel</button>
+      </div>
+   </div>
+   <script> var app = angular.module('todoApp', []); app.controller('TodoController', function ($scope) 
+      {
+         $scope.tasks = []; 
+         $scope.newTask = '';
+         $scope.editingTask = null;
+         $scope.addTask = function () 
+          {
+            if($scope.newTask) 
+              { 
+               $scope.tasks.push(
+                  {
+                   name: $scope.newTask 
+                  }); 
+                  $scope.newTask = '';  // Clear the input field 
+               }
+          };
+            $scope.editTask = function (task)
+            {
+              $scope.editingTask = angular.copy(task); 
+              $scope.editingTaskIndex = $scope.tasks.indexOf(task);
+            }; 
+               $scope.saveEditedTask = function () 
+                 { 
+                  if($scope.editingTaskIndex !== undefined)
+                   { 
+                     $scope.tasks[$scope.editingTaskIndex] = angular.copy($scope.editingTask);
+                     $scope.editingTask = null;   // Clear the editingTask variable
+                     $scope.editingTaskIndex = undefined; 
+                   }
+                   }; 
+               $scope.cancelEdit = function () 
+            {
+              $scope.editingTask = null;    // Clear the editingTask variable
+              $scope.editingTaskIndex = undefined; 
+            };
+            $scope.deleteTask = function (task) { 
+                var index = $scope.tasks.indexOf(task);
+                 if (index !== -1) 
+                 { 
+                  $scope.tasks.splice(index, 1);
+                  } 
+               };
+             });
+   </script>
+</body>
+</html>
